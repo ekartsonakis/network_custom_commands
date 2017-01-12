@@ -1,0 +1,85 @@
+#!/usr/bin/expect -f 
+
+## ekartso
+
+if { "$argc" != 5 } {
+        send_user "Usage: $argv0 Username Passwd devIP hostname\n"
+        send_user "   Ex: $argv0 efterpi kodikalaki 1.1.1.1 bras-mar3\n"
+        exit 1
+}
+
+set timeout 180
+
+#username
+set arg1 [lindex $argv 0]
+
+#password
+set arg2 [lindex $argv 1] 
+
+#deviceIP
+set arg3 [lindex $argv 2] 
+
+#hostname
+set arg4 [lindex $argv 3]
+
+#command
+set arg5 [lindex $argv 4]
+
+#puts $arg4
+
+
+if { [catch {
+	spawn -noecho telnet "$arg3"
+}] } {
+	puts "ERROR: Cannot open telnet connection"
+	exit
+}
+
+if { [catch {
+
+	expect {
+		"name:" {
+			send "$arg1\n"}
+                timeout {
+                        puts "ERROR: Timeout waiting for prompt: username"
+                        exit
+		}
+	}
+		
+
+	expect {
+		"word:" {
+			send "$arg2\n"}
+                timeout {
+                        puts "ERROR: Timeout waiting for prompt: password"
+                        exit
+		}
+	}
+
+	
+}] } {
+	puts "ERROR: Couldn't login to remote host"
+	exit
+}
+
+if { [catch {
+	expect {
+		"\#" {  
+			send "terminal length 0\n";
+		}
+	}
+	expect {
+		"\#" {  
+			send "$arg5\n";
+		}
+	}
+	expect {
+		"\#" {
+			send "exit\n"
+		}
+	}
+
+}] } {
+	puts "ERROR: Disconnected from remote host"
+	exit
+}
