@@ -1,7 +1,7 @@
 #!/bin/bash
-#Manos Kartsonakis - cloud services support
+#Manos Kartsonakis
 #Script for custom show commands 
-# versioning - comments to git!
+#versioning - comments to git!
 
 #Keep starting time in a variable:
 

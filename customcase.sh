@@ -1,5 +1,5 @@
 #!/bin/bash
-#ekartso
+#Manolis Kartsonakis
 #see git/gitlab for commits
 
 #Check if argument 1 is empty
